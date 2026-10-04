@@ -1,0 +1,314 @@
+﻿@model CallCenter.Models.SRManagementModel
+
+@{
+    ViewBag.Title = "SRManagementEdit";
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<h2>Edit InBound</h2>
+
+@using (Html.BeginForm())
+{
+
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.SRId)
+
+        <div class="form-group row">
+
+            <div class="col-md-6">
+                <div class="col-md-12"> @Html.Label("Phone No", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                <div class="col-md-12">  @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control" } }) </div>
+                <div class="col-md-12">  @Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger errorMsgPadding" }) </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="col-md-12">@Html.Label("Type Of Call", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.TypeOfCall, new List<SelectListItem>
+               {
+                   new SelectListItem{ Text="Complaint", Value = "Complaint" },
+                   new SelectListItem{ Text="Inquire", Value = "Inquire" },
+
+                }, new { @class = "form-control" })
+                </div>
+                <div class="col-md-12"> @Html.ValidationMessageFor(model => model.TypeOfCall, "", new { @class = "text-danger errorMsgPadding" }) </div>
+            </div>
+        </div>
+        <div id="complaint" style="display:none">
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <div class="col-md-12"> @Html.Label("Reporter Name", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                    <div class="col-md-12"> @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } }) </div>
+                    <div class="col-md-12"> @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="col-md-12"> @Html.Label("Reporter Type", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.CustomerSegment, new List<SelectListItem>
+                        {
+                        new SelectListItem{ Text="Individual Lending Client", Value = "IndividualLendingClient" },
+                        new SelectListItem{ Text="Group Lending Client", Value = "GroupLendingClient" },
+                           new SelectListItem{ Text="Non Client", Value = "NonClient" },
+                         }, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-12">@Html.ValidationMessageFor(model => model.CustomerSegment, "", new { @class = "text-danger errorMsgPadding" })</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <div class="col-md-12"> @Html.Label("Nature of Complaints", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.NatureofComplaints, new List<SelectListItem>
+                        {
+                        new SelectListItem{ Text="Service Delay", Value = "ServiceDelay" },
+                        new SelectListItem{ Text="Loan Rejection", Value = "LoanRejection" },
+                           new SelectListItem{ Text="Staff Behavior", Value = "StaffBehavior" },
+                           new SelectListItem{ Text="Group Conflict", Value = "GroupConflict" },
+                           new SelectListItem{ Text="No Response", Value = "NoResponse" },
+                           new SelectListItem{ Text="Fraud", Value = "Fraud" },
+                           new SelectListItem{ Text="Rescheduling Request", Value = "ReschedulingRequest" },
+                           new SelectListItem{ Text="Other", Value = "Other" },
+                         }, new { @class = "form-control" })
+                        <div class="col-md-12">@Html.ValidationMessageFor(model => model.NatureofComplaints, "", new { @class = "text-danger errorMsgPadding" })</div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-12"> @Html.Label("Address", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                    <div class="col-md-12"> @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } }) </div>
+                    <div class="col-md-12"> @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <div class="col-md-12"> @Html.Label("Branch Name", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.BranchName, new List<SelectListItem>
+                        {
+                        new SelectListItem{ Text="Branch1", Value = "Branch1" },
+                        new SelectListItem{ Text="Branch2", Value = "Branch2" },
+
+                           new SelectListItem{ Text="Other", Value = "Other" },
+                         }, new { @class = "form-control" })
+                        <div class="col-md-12">@Html.ValidationMessageFor(model => model.NatureofComplaints, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-12"> @Html.Label("Request for Resolution", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                    <div class="col-md-12"> @Html.EditorFor(model => model.RequestForResoluction, new { htmlAttributes = new { @class = "form-control" } }) </div>
+                    <div class="col-md-12">  @Html.ValidationMessageFor(model => model.RequestForResoluction, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                </div>
+            </div>
+        </div>
+        <div id="inquire" style="display:none">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="col-md-12"> @Html.Label("Type Of Caller", htmlAttributes: new { @class = "control-label paddingBottom10px" })</div>
+                    <div class="col-md-12">
+                        <div class="col-md-4"> @Html.RadioButtonFor(model => model.TypeOfCaller, "Products", new { @class = "form-control redioButton", @checked = "@checked" })<span class="redioButtonText">Products</span> </div>
+                        <div class="col-md-4">@Html.RadioButtonFor(model => model.TypeOfCaller, "BranchPhoneNumber", new { @class = "form-control redioButton" })<span class="redioButtonText">Branch Phone Number</span></div>
+                        <div class="col-md-4">@Html.RadioButtonFor(model => model.TypeOfCaller, "BranchAddress", new { @class = "form-control redioButton" })<span class="redioButtonText">Branch Address</span></div>
+                        <div class="col-md-4">@Html.RadioButtonFor(model => model.TypeOfCaller, "PhoneNumberofBranchManagerorSupervisor", new { @class = "form-control redioButton" })<span class="redioButtonText">Phone Number of Branch Manager or Supervisor</span></div>
+
+                        <div class="col-md-4">@Html.RadioButtonFor(model => model.TypeOfCaller, "Other", new { @class = "form-control redioButton" })<span class="redioButtonText">Other</span></div>
+                    </div>
+                    <div class="col-md-12"> @Html.ValidationMessageFor(model => model.TypeOfCaller, "", new { @class = "text-danger errorMsgPadding" })</div>
+                </div>
+
+            </div>
+            <div id="typeofothercaller" style="display:none">
+                <div class="form-group row">
+                    <div class="col-md-12">
+                        <div class="col-md-12"> @Html.Label("Type Of Caller Other", htmlAttributes: new { @class = "control-label" }) </div>
+                        <div class="col-md-12"> @Html.TextAreaFor(model => model.TypeOfCallerOther, new { @class = "form-control", @row = "3" }) </div>
+                        <div class="col-md-12">  @Html.ValidationMessageFor(model => model.TypeOfCallerOther, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                </div>
+            </div>
+            <div id="product">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("Type of Product", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.TypeOfProduct, new List<SelectListItem>
+                            {
+                            new SelectListItem{ Text="Individual Lending", Value = "IndividualLending" },
+                            new SelectListItem{ Text="Group Lending", Value = "GroupLending" },
+                            new SelectListItem{ Text="Voluntary Savings", Value = "VoluntarySavings" },
+                               new SelectListItem{ Text="Other", Value = "Other" },
+                             }, new { @class = "form-control" })
+                            <div class="col-md-12">@Html.ValidationMessageFor(model => model.TypeOfProductOther, "", new { @class = "text-danger errorMsgPadding" })</div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="otherproducttype" style="display:none">
+                        <div class="col-md-12"> @Html.Label("Typy Of Product Other", htmlAttributes: new { @class = "control-label" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.TypeOfProductOther, new { htmlAttributes = new { @class = "form-control" } }) </div>
+                        <div class="col-md-12">  @Html.ValidationMessageFor(model => model.TypeOfProductOther, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("Gender", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.Gender, new List<SelectListItem>
+                            {
+                            new SelectListItem{ Text="Male", Value = "Male" },
+                            new SelectListItem{ Text="Female", Value = "Female" },
+                             }, new { @class = "form-control" })
+                            <div class="col-md-12">@Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger errorMsgPadding" })</div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("Region", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.RegionComplaint, new List<SelectListItem>
+                            {
+                            new SelectListItem{ Text="Region1", Value = "Region1" },
+                            new SelectListItem{ Text="Region2", Value = "Region2" },
+                             }, new { @class = "form-control" })
+                            <div class="col-md-12">@Html.ValidationMessageFor(model => model.Region, "", new { @class = "text-danger errorMsgPadding" })</div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("Township where your home/ business is located", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.Town, new List<SelectListItem>
+                            {
+                            new SelectListItem{ Text="Town1", Value = "Town1" },
+                            new SelectListItem{ Text="Town2", Value = "Town2" },
+                             }, new { @class = "form-control" })
+                            <div class="col-md-12">@Html.ValidationMessageFor(model => model.Town, "", new { @class = "text-danger errorMsgPadding" })</div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("Business Type", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.TypeOfBusiness, new List<SelectListItem>
+                            {
+                            new SelectListItem{ Text="Business1", Value = "Business1" },
+                            new SelectListItem{ Text="Business2", Value = "Business2" },
+                               new SelectListItem{ Text="Other", Value = "Other" },
+                             }, new { @class = "form-control" })
+                            <div class="col-md-12">@Html.ValidationMessageFor(model => model.TypeOfBusiness, "", new { @class = "text-danger errorMsgPadding" })</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="otherbusiness" style="display:none">
+                        <div class="col-md-12"> @Html.Label("Business Other", htmlAttributes: new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.TypeOfBusinessOther, new { htmlAttributes = new { @class = "form-control" } }) </div>
+                        <div class="col-md-12">  @Html.ValidationMessageFor(model => model.TypeOfBusinessOther, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <div class="savecancelbutton">
+                    <input type="submit" value="Save" class="btn btn-primary marginright100px" />
+                    <input type="button" value="Cancel" class="btn btn-primary" onclick="window.location= '@Url.Action( "SRList", "Home")'" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<style>
+    .redioButtonText {
+        width: 80% !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+        if ($("#TypeOfCall").val() == "Complaint") {
+            $("#complaint").show();
+            $("#inquire").hide();
+        }
+        else {
+            $("#complaint").hide();
+            $("#inquire").show();
+        }
+        if ($("#TypeOfBusiness").val() == "Other") {
+            $("#otherbusiness").show();
+        }
+        else {
+            $("#otherbusiness").hide();
+        }
+        if ($("#TypeOfCaller:checked").val() == "Products") {
+            $("#product").show();
+            $("#typeofothercaller").hide();
+        }
+        else {
+            $("#product").hide();
+            $("#typeofothercaller").show();
+        }
+
+         $("#TypeOfBusiness").on("change", function () {
+            if ($("#TypeOfBusiness").val() == "Other") {
+                $("#otherbusiness").show();
+            }
+            else {
+                $("#otherbusiness").hide();
+            }
+        });
+
+        $("#TypeOfCall").on("change", function () {
+            if ($("#TypeOfCall").val() == "Complaint") {
+                $("#complaint").show();
+                $("#inquire").hide();
+
+            }
+            else {
+                $("#complaint").hide();
+                $("#inquire").show();
+
+            }
+
+        });
+
+        $("#TypyOfProduct").on("change", function () {
+
+            if ($("#TypyOfProduct").val() == "Other") {
+                $("#otherproducttype").show();
+            }
+            else {
+                $("#otherproducttype").hide();
+            }
+        });
+
+        $("#TypyOfBusiness").on("change", function () {
+
+            if ($("#TypyOfBusiness").val() == "Other") {
+                $("#otherbusiness").show();
+            }
+            else {
+                $("#otherbusiness").hide();
+            }
+        });
+
+        $(document).on("change", "#TypeOfCaller", function () {
+
+            $("#CustomerSegment").html("");
+            if ($("#TypeOfCaller:checked").val() == "Products") {
+                $("#product").show();
+                $("#typeofothercaller").hide();
+            }
+            else {
+                $("#product").hide();
+                $("#typeofothercaller").show();
+            }
+        });
+
+    });
+</script>

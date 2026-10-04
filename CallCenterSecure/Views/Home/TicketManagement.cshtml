@@ -1,0 +1,861 @@
+﻿@model CallCenter.Models.TicketManagementModel
+
+@{
+    ViewBag.Title = "TicketManagement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+<h2>OutBound</h2>
+
+@if (ViewBag.Status != null && Convert.ToBoolean(ViewBag.Status))
+{
+    if (ViewBag.Message != null)
+    {
+        <div class="alert alert-success">
+            <strong>Success!</strong> @ViewBag.Message
+        </div>
+    }
+}
+else
+{
+
+    using (Html.BeginForm("TicketManagement", "Home", FormMethod.Post))
+    {
+
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @*<div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("Inbound/OutBound", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12">
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.TypeOfCaller, "Outbound", new { @class = "form-control redioButton", @checked = "@checked" })<span class="redioButtonText">Outbound</span> </div>
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.TypeOfCaller, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                </div>*@
+
+            <div class="form-group row search-frame">
+                <div class="col-md-3">
+                    <div class="col-md-12"> @Html.Label("SearchBranch","Branch", new { @class = "control-label paddingBottom10px" })</div>
+                    <div class="col-md-12">
+                        @Html.DropDownList("SearchBranch", new List<SelectListItem>
+                   {
+                        new SelectListItem{ Text="Aung Lan", Value = "Aung Lan" },
+                        new SelectListItem{ Text="Bago-1", Value = "Bago-1" },
+                        new SelectListItem{ Text="Bago-2", Value = "Bago-2" },
+                        new SelectListItem{ Text="Chaungzon", Value = "Chaungzon" },
+                        new SelectListItem{ Text="Dawei", Value = "Dawei" },
+                        new SelectListItem{ Text="East Dagon", Value = "East Dagon" },
+                        new SelectListItem{ Text="Gyobingauk", Value = "Gyobingauk" },
+                        new SelectListItem{ Text="Hlegu", Value = "Hlegu" },
+                        new SelectListItem{ Text="Hlegu-2", Value = "Hlegu-2" },
+                        new SelectListItem{ Text="Hpa-An", Value = "Hpa-An" },
+                        new SelectListItem{ Text="Insein", Value = "Insein" },
+                        new SelectListItem{ Text="Kamma", Value = "Kamma" },
+                        new SelectListItem{ Text="Kawa", Value = "Kawa" },
+                        new SelectListItem{ Text="Kayan", Value = "Kayan" },
+                        new SelectListItem{ Text="Kyaukse", Value = "Kyaukse" },
+                        new SelectListItem{ Text="Kyauktaga", Value = "Kyauktaga" },
+                        new SelectListItem{ Text="Letpadan", Value = "Letpadan" },
+                        new SelectListItem{ Text="Lewe", Value = "Lewe" },
+                        new SelectListItem{ Text="Magway", Value = "Magway" },
+                        new SelectListItem{ Text="Mawlamyine-1", Value = "Mawlamyine-1" },
+                        new SelectListItem{ Text="Mawlamyine-2", Value = "Mawlamyine-2" },
+                        new SelectListItem{ Text="Mayangone", Value = "Mayangone" },
+                        new SelectListItem{ Text="Meiktila", Value = "Meiktila" },
+                        new SelectListItem{ Text="Min Hla", Value = "Min Hla" },
+                        new SelectListItem{ Text="Minbu", Value = "Minbu" },
+                        new SelectListItem{ Text="Mingalardone", Value = "Mingalardone" },
+                        new SelectListItem{ Text="Mingalartaungnyunt", Value = "Mingalartaungnyunt" },
+                        new SelectListItem{ Text="Monywa", Value = "Monywa" },
+                        new SelectListItem{ Text="Mudon", Value = "Mudon" },
+                        new SelectListItem{ Text="Myingyan", Value = "Myingyan" },
+                        new SelectListItem{ Text="Myinmu", Value = "Myinmu" },
+                        new SelectListItem{ Text="Myittha", Value = "Myittha" },
+                        new SelectListItem{ Text="Myothit", Value = "Myothit" },
+                        new SelectListItem{ Text="Natmauk", Value = "Natmauk" },
+                        new SelectListItem{ Text="Nattalin", Value = "Nattalin" },
+                        new SelectListItem{ Text="Naung Hkio", Value = "Naung Hkio" },
+                        new SelectListItem{ Text="North Dagon", Value = "North Dagon" },
+                        new SelectListItem{ Text="North Okkalapa", Value = "North Okkalapa" },
+                        new SelectListItem{ Text="North Okkalapa-2", Value = "North Okkalapa-2" },
+                        new SelectListItem{ Text="Oaktwin", Value = "Oaktwin" },
+                        new SelectListItem{ Text="Okpho", Value = "Okpho" },
+                        new SelectListItem{ Text="Padaung", Value = "Padaung" },
+                        new SelectListItem{ Text="Paukkhaung", Value = "Paukkhaung" },
+                        new SelectListItem{ Text="Paung", Value = "Paung" },
+                        new SelectListItem{ Text="Paungde", Value = "Paungde" },
+                        new SelectListItem{ Text="Phyu", Value = "Phyu" },
+                        new SelectListItem{ Text="Pyawbwe", Value = "Pyawbwe" },
+                        new SelectListItem{ Text="Pyay-1", Value = "Pyay-1" },
+                        new SelectListItem{ Text="Pyay-2", Value = "Pyay-2" },
+                        new SelectListItem{ Text="Sagaing", Value = "Sagaing" },
+                        new SelectListItem{ Text="Shwedaung", Value = "Shwedaung" },
+                        new SelectListItem{ Text="Shwepyithar-1", Value = "Shwepyithar-1" },
+                        new SelectListItem{ Text="Shwepyithar-2", Value = "Shwepyithar-2" },
+                        new SelectListItem{ Text="Sintgaing", Value = "Sintgaing" },
+                        new SelectListItem{ Text="Taungdwingyi", Value = "Taungdwingyi" },
+                        new SelectListItem{ Text="Taungoo", Value = "Taungoo" },
+                        new SelectListItem{ Text="Taungtha", Value = "Taungtha" },
+                        new SelectListItem{ Text="Thaegon-2", Value = "Thaegon-2" },
+                        new SelectListItem{ Text="Thaketa-1", Value = "Thaketa-1" },
+                        new SelectListItem{ Text="Thaketa-2", Value = "Thaketa-2" },
+                        new SelectListItem{ Text="Thanatpin", Value = "Thanatpin" },
+                        new SelectListItem{ Text="Tharegon", Value = "Tharegon" },
+                        new SelectListItem{ Text="Thayarwady", Value = "Thayarwady" },
+                        new SelectListItem{ Text="Thazi", Value = "Thazi" },
+                        new SelectListItem{ Text="Thingangyun", Value = "Thingangyun" },
+                        new SelectListItem{ Text="Wundwin", Value = "Wundwin" },
+                        new SelectListItem{ Text="Yamaethin", Value = "Yamaethin" },
+                        new SelectListItem{ Text="Yedashe", Value = "Yedashe" },
+                        new SelectListItem{ Text="Zigon", Value = "Zigon" },
+
+                    }, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-12">@Html.Label("TypeOfCall", "Type Of Call", new { @class = "control-label paddingBottom10px" }) </div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.TypeOfCall, new List<SelectListItem>
+                   {
+                       new SelectListItem{ Text="GL Clients", Value = "GLClients" },
+                       new SelectListItem{ Text="IL Clients Early", Value = "AllILClients" },
+                       new SelectListItem{ Text="IL Clients (Late Payment)", Value = "ILClients" },
+                       new SelectListItem{ Text="VSA Clients", Value = "VSAClients" },
+                    }, new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-12"> @Html.ValidationMessageFor(model => model.TypeOfCall, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="col-md-12"> @Html.Label("SPParameterValue", "Search Type", new { @class = "control-label paddingBottom10px" })</div>
+                    <div class="col-md-12">
+                        @Html.DropDownListFor(model => model.SPParameterValue, new List<SelectListItem>
+                   {
+                       new SelectListItem{ Text="GroupID", Value = "GroupID" },
+                       new SelectListItem{ Text="CollPtNr", Value = "CollPtNr" },
+                       new SelectListItem{ Text="GrpLdrName", Value = "GrpLdrName" },
+                       new SelectListItem{ Text="GrpLdrFon", Value = "GrpLdrFon" },
+                    }, new { @class = "form-control" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="col-md-12"> @Html.Label("ClientIdSearch", "Search For", new { @class = "control-label paddingBottom10px" })</div>
+                    <div class="col-md-12"> @Html.Editor("ClientIdSearch", "", new { htmlAttributes = new { @class = "form-control" } })</div>
+
+                </div>
+
+                <div class="col-md-2">
+                    <div class="col-md-12 margin-top-35">
+                        <input type="button" value="Search" id="btnSearch" class="btn btn-primary marginright100px" />
+                    </div>
+                </div>
+
+            </div>
+            <div id="gl-client" style="display:none">
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLClientId", "GroupID", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLClientId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLClientId, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLName", "Group Leader Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLCallingNumber", "Group Leader Phone Number", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLCallingNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLCallingNumber, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLBranchName", "Branch Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLBranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLBranchName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLCollectionDate", "Scheduled Colleciton Date", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLCollectionDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLCollectionDate, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLCollectionPointNumber", "Collection Point Number (စုရပ်နံပါတ်)", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLCollectionPointNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLCollectionPointNumber, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLTotalDueAmount", "Total Due Amont (Late Due Amount)", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLTotalDueAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLTotalDueAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLRepaymentAmount", "Total Repayment Amount", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLRepaymentAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLRepaymentAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLSchPaid", "Repayment Amount (Schedued Date)", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLSchPaid, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLSchPaid, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("GLDepositeSavingAmount", "Total Deposit Savings Amount (VSA) of the Group", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.GLDepositeSavingAmount, new { htmlAttributes = new { @class = "form-control" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLDepositeSavingAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    @*<div class="col-md-3">
+                            <div class="col-md-12"> @Html.Label("Saving Withdrawl  Amount (VSA)", new { @class = "control -label paddingBottom10px" }) </div>
+                            <div class="col-md-12"> @Html.EditorFor(model => model.WithdrawAmount, new { htmlAttributes = new { @class = "form-control" } })</div>
+                            <div class="col-md-12"> @Html.ValidationMessageFor(model => model.WithdrawAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                        </div>*@
+                    <div class="col-md-3">
+                        <div class="col-md-12">@Html.Label("GLCashIs","The extra repayment cash is ??", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.GLCashIs, new List<SelectListItem>
+                       {
+                           new SelectListItem{ Text="Overdue", Value = "overdue" },
+                           new SelectListItem{ Text="Prepaid", Value = "prepaid" },
+                           new SelectListItem{ Text="Savings", Value = "savings" },
+                           new SelectListItem{ Text="None", Value = "none" },
+                        }, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GLCashIs, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="col-md-12"> @Html.Label("RepaymentVoucher","Did you receive repayment voucher?", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12">
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.RepaymentVoucher, "Yes", new { @class = "form-control redioButton" })<span class="redioButtonText">Yes</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.RepaymentVoucher, "No", new { @class = "form-control redioButton" })<span class="redioButtonText">No</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.RepaymentVoucher, "N/A", new { @class = "form-control redioButton", @checked = "@checked" })<span class="redioButtonText">N/A</span> </div>
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.RepaymentVoucher, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("MessageFromDawn","Did you get message from DAWN after making repayment?", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12">
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.MessageFromDawn, "Yes", new { @class = "form-control redioButton" })<span class="redioButtonText">Yes</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.MessageFromDawn, "No", new { @class = "form-control redioButton" })<span class="redioButtonText">No</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.MessageFromDawn, "N/A", new { @class = "form-control redioButton", @checked = "@checked" })<span class="redioButtonText">N/A</span> </div>
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.MessageFromDawn, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("GL_Remark","Comments", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.TextAreaFor(model => model.GL_Remark, new { @class = "form-control", @rows = "4" }) </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.GL_Remark, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="all-il-clients" style="display:none">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("All_ILClientId", "Client Id", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILClientId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILClientId, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("All_ILName","Client Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("All_ILCallingNumber","Client Phone Number", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILCallingNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILCallingNumber, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("All_ILBranchName", "Branch Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILBranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILBranchName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("All_ILCollectionDate", "Scheduled Colleciton Date", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILCollectionDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILCollectionDate, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("All_ILTotalDueAmount","Total Due Amount (Early Due Amount)", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILTotalDueAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILTotalDueAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("All_ILRepaymentAmount","Repayment Amount", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILRepaymentAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILRepaymentAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("All_ILSchPaid","Repayment Amount (Schedued Date)", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.All_ILSchPaid, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.All_ILSchPaid, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("ALL_IL_Remark","Comments", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.TextAreaFor(model => model.ALL_IL_Remark, new { @class = "form-control", @rows = "4", @maxlength = "800" }) </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ALL_IL_Remark, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="il-clients" style="display:none">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("ILClientId","Client Id", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILClientId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILClientId, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("ILName","Client Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("ILCallingNumber","Client Phone Number", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILCallingNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILCallingNumber, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("ILBranchName","Branch Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILBranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILBranchName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("ILCollectionDate","Scheduled Colleciton Date", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILCollectionDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILCollectionDate, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("ILTotalDueAmount","Total Due Amont (Late Due Amount)", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILTotalDueAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILTotalDueAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("ILRepaymentAmount","Total Repayment Amount", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILRepaymentAmount, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILRepaymentAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("ILSchPaid","Repayment Amount (Schedued Date)", new { @class = "control -label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.ILSchPaid, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILSchPaid, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("RepaymentVoucher","Did you receive repayment voucher?", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12">
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.RepaymentVoucher, "Yes", new { @class = "form-control redioButton" })<span class="redioButtonText">Yes</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.RepaymentVoucher, "No", new { @class = "form-control redioButton" })<span class="redioButtonText">No</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.RepaymentVoucher, "N/A", new { @class = "form-control redioButton", @checked = "@checked" })<span class="redioButtonText">N/A</span> </div>
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.RepaymentVoucher, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="col-md-12"> @Html.Label("MessageFromDawn","Did you get message from DAWN after making repayment?", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12">
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.MessageFromDawn, "Yes", new { @class = "form-control redioButton" })<span class="redioButtonText">Yes</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.MessageFromDawn, "No", new { @class = "form-control redioButton" })<span class="redioButtonText">No</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.MessageFromDawn, "N/A", new { @class = "form-control redioButton", @checked = "@checked" })<span class="redioButtonText">N/A</span> </div>
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.MessageFromDawn, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12">@Html.Label("ILCashIs","The extra repayment cash is ??", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12">
+                            @Html.DropDownListFor(model => model.ILCashIs, new List<SelectListItem>
+                       {
+                           new SelectListItem{ Text="Overdue", Value = "overdue" },
+                           new SelectListItem{ Text="Prepaid", Value = "prepaid" },
+                           new SelectListItem{ Text="Savings", Value = "savings" },
+                           new SelectListItem{ Text="None", Value = "none" },
+                        }, new { @class = "form-control" })
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.ILCashIs, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("IL_Remark","Comments", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.TextAreaFor(model => model.IL_Remark, new { @class = "form-control", @rows = "4" }) </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.IL_Remark, "", new { @class = "text-danger errorMsgPadding" }) </div>
+                    </div>
+                </div>
+            </div>
+            <div id="vsa-clients" style="display:none">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("VSAClientId","Client Id", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.VSAClientId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.VSAClientId, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("VSAName","Client Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.VSAName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.VSAName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("VSACallingNumber","Client Phone Number", new { @class = "control-label paddingBottom10px" }) </div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.VSACallingNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.VSACallingNumber, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("VSABranchName","Branch Name", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.VSABranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.VSABranchName, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("VSACollectionPointNumber","Collection Point Number (စုရပ်နံပါတ်)", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.VSACollectionPointNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.VSACollectionPointNumber, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("VSAWithdrawAmount","Saving Withdrawl  Amount (VSA)", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12"> @Html.EditorFor(model => model.VSAWithdrawAmount, new { htmlAttributes = new { @class = "form-control" } })</div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.VSAWithdrawAmount, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <div class="col-md-12"> @Html.Label("AmountCorrect","The amount is correct or not?", new { @class = "control-label paddingBottom10px" })</div>
+                        <div class="col-md-12">
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.AmountCorrect, "Yes", new { @class = "form-control redioButton" })<span class="redioButtonText">Yes</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.AmountCorrect, "No", new { @class = "form-control redioButton" })<span class="redioButtonText">No</span> </div>
+                            <div class="col-md-4"> @Html.RadioButtonFor(model => model.AmountCorrect, "N/A", new { @class = "form-control redioButton", @checked = "@checked" })<span class="redioButtonText">N/A</span> </div>
+                        </div>
+                        <div class="col-md-12"> @Html.ValidationMessageFor(model => model.AmountCorrect, "", new { @class = "text-danger errorMsgPadding" })</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <div class="savecancelbutton">
+                        <input type="submit" value="Save" class="btn btn-primary marginright100px" />
+                        <input type="button" value="Cancel" class="btn btn-primary" onclick="window.location= '@Url.Action( "TicketList", "Home")'" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<input type='hidden' value='@Request.QueryString["Type"]' id='hdnCallType' />
+<input type='hidden' value='@Request.QueryString["SearchID"]' id='hdnSearchID' />
+<input type='hidden' value='@Request.QueryString["SearchFor"]' id='hdnSearchFor' />
+<input type='hidden' value='@Request.QueryString["PhoneNumber"]' id='hdnPhoneNumber' />
+<input type='hidden' value='@Request.QueryString["BranchName"]' id='hdnBranchName' />
+
+<style>
+    @@media (min-width: 768px) {
+        .form-horizontal .control-label {
+            text-align: left !important;
+        }
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+
+        var type = $("#hdnCallType").val();
+        var searchid = $("#hdnSearchID").val();
+        var searchfor = $("#hdnSearchFor").val();
+        var phonenumber = $("#hdnPhoneNumber").val();
+        var branchname = $("#hdnBranchName").val();
+
+        if (type != null && type != "") {
+            $("#TypeOfCall").val(type);
+            typeofcallChangeFiled();
+        }
+        if (searchid != null && searchid != "") {
+            $("#SPParameterValue").val(searchid);
+        }
+        if (searchfor != null && searchfor != "") {
+            $("#ClientIdSearch").val(searchfor);
+        }
+
+        if (branchname != null && branchname != "") {
+            $("#SearchBranch").val(branchname);
+        }
+
+        if ($("#TypeOfCall").val() == "GLClients") {
+            $("#gl-client").show();
+        }
+
+        $(document).on("change", "#TypeOfCall", function () {
+
+            clearallautofield();
+            typeofcallChangeFiled();
+        });
+
+        function typeofcallChangeFiled() {
+            $("#SPParameterValue").html("");
+
+            if ($("#TypeOfCall").val() == "GLClients") {
+
+                $("#SPParameterValue").append("<option value='GroupID'>GroupID</option>");
+                $("#SPParameterValue").append("<option value='CollPtNr'>CollPtNr</option>");
+                $("#SPParameterValue").append("<option value='GrpLdrName'>GrpLdrName</option>");
+                $("#SPParameterValue").append("<option value='GrpLdrFon'>GrpLdrFon</option>");
+
+                $("#gl-client").show();
+                $("#all-il-clients").hide();
+                $("#il-clients").hide();
+                $("#vsa-clients").hide();
+
+            }
+            else if ($("#TypeOfCall").val() == "AllILClients") {
+
+                $("#SPParameterValue").append("<option value='IndivName'>IndivName</option>");
+                $("#SPParameterValue").append("<option value='IndivID'>IndivID</option>");
+                $("#SPParameterValue").append("<option value='IndivFon'>IndivFon</option>");
+
+                $("#gl-client").hide();
+                $("#all-il-clients").show();
+                $("#il-clients").hide();
+                $("#vsa-clients").hide();
+            }
+            else if ($("#TypeOfCall").val() == "ILClients") {
+
+                $("#SPParameterValue").append("<option value='IndivName'>IndivName</option>");
+                $("#SPParameterValue").append("<option value='IndivID'>IndivID</option>");
+                $("#SPParameterValue").append("<option value='IndivFon'>IndivFon</option>");
+
+                $("#gl-client").hide();
+                $("#all-il-clients").hide();
+                $("#il-clients").show();
+                $("#vsa-clients").hide();
+            }
+            else if ($("#TypeOfCall").val() == "VSAClients") {
+
+                $("#SPParameterValue").append("<option value='IndivName'>IndivName</option>");
+                $("#SPParameterValue").append("<option value='IndivID'>IndivID</option>");
+                $("#SPParameterValue").append("<option value='IndivFon'>IndivFon</option>");
+
+                $("#gl-client").hide();
+                $("#all-il-clients").hide();
+                $("#il-clients").hide();
+                $("#vsa-clients").show();
+            }
+        }
+
+        function clearallautofield() {
+            $("#gl-client #GLClientId").val("");
+            $("#il-clients #ILClientId").val("");
+            $("#all-il-clients #All_ILClientId").val("");
+            $("#vsa-clients #VSAClientId").val("");
+
+            $("#gl-client #GLName").val("");
+            $("#il-clients #ILName").val("");
+            $("#all-il-clients #All_ILName").val("");
+            $("#vsa-clients #VSAName").val("");
+
+
+            $("#gl-client #GLCallingNumber").val("");
+            $("#il-clients #ILCallingNumber").val("");
+            $("#all-il-clients #All_ILCallingNumber").val("");
+            $("#vsa-clients #VSACallingNumber").val("");
+
+
+            $("#gl-client #GLBranchName").val("");
+            $("#il-clients #ILBranchName").val("");
+            $("#all-il-clients #All_ILBranchName").val("");
+            $("#vsa-clients #VSABranchName").val("");
+
+            $("#gl-client #GLCollectionDate").val("");
+            $("#il-clients #ILCollectionDate").val("");
+            $("#all-il-clients #All_ILCollectionDate").val("");
+            $("#vsa-clients #VSACollectionDate").val("");
+
+            $("#gl-client #GLCollectionPointNumber").val("");
+            $("#il-clients #ILCollectionPointNumber").val("");
+            $("#all-il-clients #All_ILCollectionPointNumber").val("");
+            $("#vsa-clients #VSACollectionPointNumber").val("");
+
+            $("#gl-client #GLRepaymentAmount").val("");
+            $("#il-clients #ILRepaymentAmount").val("");
+            $("#all-il-clients #All_ILRepaymentAmount").val("");
+            $("#vsa-clients #VSARepaymentAmount").val("");
+
+            $("#gl-client #GLWithdrawAmount").val("");
+            $("#il-clients #ILWithdrawAmount").val("");
+            $("#all-il-clients #All_ILWithdrawAmount").val("");
+            $("#vsa-clients #VSAWithdrawAmount").val("");
+
+            $("#gl-client #GLTotalDueAmount").val("");
+            $("#il-clients #ILTotalDueAmount").val("");
+            $("#all-il-clients #All_ILTotalDueAmount").val("");
+            $("#vsa-clients #VSATotalDueAmount").val("");
+
+            $("#gl-client #GLDepositeSavingAmount").val("");
+            $("#il-clients #ILDepositeSavingAmount").val("");
+            $("#all-il-clients #All_ILDepositeSavingAmount").val("");
+            $("#vsa-clients #VSADepositeSavingAmount").val("");
+
+            $("#gl-client #GLSchPaid").val("");
+            $("#il-clients #ILSchPaid").val("");
+            $("#all-il-clients #All_ILSchPaid").val("");
+            $("#vsa-clients #VSASchPaid").val("");
+
+        }
+
+        $("#btnSearch").click(function () {
+            getSearchData();
+        });
+
+        function getSearchData() {
+
+            $.ajax(
+                {
+                    url: '/Home/TicketClientSearch?TypeOfCall=' + $("#TypeOfCall").val() + '&SPParameterValue=' + $("#SPParameterValue").val() + '&ClientId=' + $("#ClientIdSearch").val() + '&SearchBranch=' + $("#SearchBranch").val(),
+                    type: 'GET',
+                    data: "",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        if (data == "nodatafound") {
+                            alert("no record round");
+                        }
+                        else {
+                            console.log(data);
+                            var ticketData = $.parseJSON(data);
+
+                            if ($("#TypeOfCall").val() == "GLClients") {
+
+                                $("#gl-client #GLClientId").val(ticketData[0].GroupID);
+                                $("#il-clients #ILClientId").val(ticketData[0].GroupID);
+                                $("#all-il-clients #All_ILClientId").val(ticketData[0].GroupID);
+                                $("#vsa-clients #VSAClientId").val(ticketData[0].GroupID);
+
+                                $("#gl-client #GLName").val(ticketData[0].GrpLdrName);
+                                $("#il-clients #ILName").val(ticketData[0].GrpLdrName);
+                                $("#all-il-clients #All_ILName").val(ticketData[0].GrpLdrName);
+                                $("#vsa-clients #VSAName").val(ticketData[0].GrpLdrName);
+
+
+                                $("#gl-client #GLCallingNumber").val(ticketData[0].GrpLdrFon);
+                                $("#il-clients #ILCallingNumber").val(ticketData[0].GrpLdrFon);
+                                $("#all-il-clients #All_ILCallingNumber").val(ticketData[0].GrpLdrFon);
+                                $("#vsa-clients #VSACallingNumber").val(ticketData[0].GrpLdrFon);
+
+
+                                $("#gl-client #GLBranchName").val(ticketData[0].BrchName);
+                                $("#il-clients #ILBranchName").val(ticketData[0].BrchName);
+                                $("#all-il-clients #All_ILBranchName").val(ticketData[0].BrchName);
+                                $("#vsa-clients #VSABranchName").val(ticketData[0].BrchName);
+
+                                $("#gl-client #GLCollectionDate").val(ticketData[0].LastSchdDate);
+                                $("#il-clients #ILCollectionDate").val(ticketData[0].LastSchdDate);
+                                $("#all-il-clients #All_ILCollectionDate").val(ticketData[0].LastSchdDate);
+                                $("#vsa-clients #VSACollectionDate").val(ticketData[0].LastSchdDate);
+
+                                $("#gl-client #GLCollectionPointNumber").val(ticketData[0].CollPtNr);
+                                $("#il-clients #ILCollectionPointNumber").val(ticketData[0].CollPtNr);
+                                $("#all-il-clients #All_ILCollectionPointNumber").val(ticketData[0].CollPtNr);
+                                $("#vsa-clients #VSACollectionPointNumber").val(ticketData[0].CollPtNr);
+
+                                $("#gl-client #GLRepaymentAmount").val(ticketData[0].TotPaid);
+                                $("#il-clients #ILRepaymentAmount").val(ticketData[0].TotPaid);
+                                $("#all-il-clients #All_ILRepaymentAmount").val(ticketData[0].TotPaid);
+                                $("#vsa-clients #VSARepaymentAmount").val(ticketData[0].TotPaid);
+
+
+                                $("#gl-client #GLTotalDueAmount").val(ticketData[0].TotDue);
+                                $("#il-clients #ILTotalDueAmount").val(ticketData[0].TotDue);
+                                $("#all-il-clients #All_ILTotalDueAmount").val(ticketData[0].TotDue);
+                                $("#vsa-clients #VSATotalDueAmount").val(ticketData[0].TotDue);
+
+                                $("#gl-client #GLDepositeSavingAmount").val(ticketData[0].VsaBalance);
+                                $("#il-clients #ILDepositeSavingAmount").val(ticketData[0].VsaBalance);
+                                $("#all-il-clients #All_ILDepositeSavingAmount").val(ticketData[0].VsaBalance);
+                                $("#vsa-clients #VSADepositeSavingAmount").val(ticketData[0].VsaBalance);
+
+                                $("#gl-client #GLSchPaid").val(ticketData[0].SchPaid);
+                                $("#il-clients #ILSchPaid").val(ticketData[0].SchPaid);
+                                $("#all-il-clients #All_ILSchPaid").val(ticketData[0].SchPaid);
+                                $("#vsa-clients #VSASchPaid").val(ticketData[0].SchPaid);
+
+
+                            }
+                            else if ($("#TypeOfCall").val() == "AllILClients" || $("#TypeOfCall").val() == "ILClients") {
+
+                                $("#gl-client #GLClientId").val(ticketData[0].IndivID);
+                                $("#il-clients #ILClientId").val(ticketData[0].IndivID);
+                                $("#all-il-clients #All_ILClientId").val(ticketData[0].IndivID);
+                                $("#vsa-clients #VSAClientId").val(ticketData[0].IndivID);
+
+                                $("#gl-client #GLName").val(ticketData[0].IndivName);
+                                $("#il-clients #ILName").val(ticketData[0].IndivName);
+                                $("#all-il-clients #All_ILName").val(ticketData[0].IndivName);
+                                $("#vsa-clients #VSAName").val(ticketData[0].IndivName);
+
+
+                                $("#gl-client #GLCallingNumber").val(ticketData[0].IndivFon);
+                                $("#il-clients #ILCallingNumber").val(ticketData[0].IndivFon);
+                                $("#all-il-clients #All_ILCallingNumber").val(ticketData[0].IndivFon);
+                                $("#vsa-clients #VSACallingNumber").val(ticketData[0].IndivFon);
+
+
+
+                                $("#gl-client #GLBranchName").val(ticketData[0].BrchName);
+                                $("#il-clients #ILBranchName").val(ticketData[0].BrchName);
+                                $("#all-il-clients #All_ILBranchName").val(ticketData[0].BrchName);
+                                $("#vsa-clients #VSABranchName").val(ticketData[0].BrchName);
+
+
+                                $("#gl-client #GLCollectionDate").val(ticketData[0].LastSchdDate);
+                                $("#il-clients #ILCollectionDate").val(ticketData[0].LastSchdDate);
+                                $("#all-il-clients #All_ILCollectionDate").val(ticketData[0].LastSchdDate);
+                                $("#vsa-clients #VSACollectionDate").val(ticketData[0].LastSchdDate);
+
+
+
+                                $("#gl-client #GLRepaymentAmount").val(ticketData[0].TotPaid);
+                                $("#il-clients #ILRepaymentAmount").val(ticketData[0].TotPaid);
+                                $("#all-il-clients #All_ILRepaymentAmount").val(ticketData[0].TotPaid);
+                                $("#vsa-clients #VSARepaymentAmount").val(ticketData[0].TotPaid);
+
+
+                                $("#gl-client #GLTotalDueAmount").val(ticketData[0].TotDue);
+                                $("#il-clients #ILTotalDueAmount").val(ticketData[0].TotDue);
+                                $("#all-il-clients #All_ILTotalDueAmount").val(ticketData[0].TotDue);
+                                $("#vsa-clients #VSATotalDueAmount").val(ticketData[0].TotDue);
+
+                                $("#gl-client #GLSchPaid").val(ticketData[0].SchPaid);
+                                $("#il-clients #ILSchPaid").val(ticketData[0].SchPaid);
+                                $("#all-il-clients #All_ILSchPaid").val(ticketData[0].SchPaid);
+                                $("#vsa-clients #VSASchPaid").val(ticketData[0].SchPaid);
+                            }
+                            else if ($("#TypeOfCall").val() == "VSAClients") {
+
+                                $("#gl-client #GLClientId").val(ticketData[0].IndivID);
+                                $("#il-clients #ILClientId").val(ticketData[0].IndivID);
+                                $("#all-il-clients #All_ILClientId").val(ticketData[0].IndivID);
+                                $("#vsa-clients #VSAClientId").val(ticketData[0].IndivID);
+
+                                $("#gl-client #GLName").val(ticketData[0].IndivName);
+                                $("#il-clients #ILName").val(ticketData[0].IndivName);
+                                $("#all-il-clients #All_ILName").val(ticketData[0].IndivName);
+                                $("#vsa-clients #VSAName").val(ticketData[0].IndivName);
+
+
+                                $("#gl-client #GLCallingNumber").val(ticketData[0].IndivFon);
+                                $("#il-clients #ILCallingNumber").val(ticketData[0].IndivFon);
+                                $("#all-il-clients #All_ILCallingNumber").val(ticketData[0].IndivFon);
+                                $("#vsa-clients #VSACallingNumber").val(ticketData[0].IndivFon);
+
+                                $("#gl-client #GLBranchName").val(ticketData[0].BranchID);
+                                $("#il-clients #ILBranchName").val(ticketData[0].BranchID);
+                                $("#all-il-clients #All_ILBranchName").val(ticketData[0].BranchID);
+                                $("#vsa-clients #VSABranchName").val(ticketData[0].BranchID);
+
+                                $("#gl-client #GLCollectionPointNumber").val(ticketData[0].CollPtNr);
+                                $("#il-clients #ILCollectionPointNumber").val(ticketData[0].CollPtNr);
+                                $("#all-il-clients #All_ILCollectionPointNumber").val(ticketData[0].CollPtNr);
+                                $("#vsa-clients #VSACollectionPointNumber").val(ticketData[0].CollPtNr);
+
+                                $("#gl-client #GLWithdrawAmount").val(ticketData[0].VsaWdrl);
+                                $("#il-clients #ILWithdrawAmount").val(ticketData[0].VsaWdrl);
+                                $("#all-il-clients #All_ILWithdrawAmount").val(ticketData[0].VsaWdrl);
+                                $("#vsa-clients #VSAWithdrawAmount").val(ticketData[0].VsaWdrl);
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                })
+        }
+
+
+        //$("#Category").on("change", function () {
+        //    fillSubCategoryDropdown();
+        //});
+        //$("#SubCategory").on("change", function () {
+        //    fillSubSubCategoryDropdown();
+        //});
+        //function fillSubCategoryDropdown() {
+        //    $.ajax(
+        //        {
+        //            url: '/Home/GetSubCategoryByCategory?CategoryId=' + $("#Category").val(),
+        //            type: 'GET',
+        //            data: "",
+        //            contentType: 'application/json; charset=utf-8',
+        //            success: function (data) {
+        //                var subcat = $.parseJSON(data);
+        //                $("#SubCategory").html("");
+        //                for (var i = 0; i < subcat.length; i++) {
+        //                    $("#SubCategory").append("<option value='" + subcat[i].SubCategoryId + "'>" + subcat[i].SubCategoryName + "</option>");
+        //                }
+        //                fillSubSubCategoryDropdown();
+        //            },
+        //            error: function () {
+        //                alert("error");
+        //            }
+        //        })
+        //}
+
+        //function fillSubSubCategoryDropdown() {
+        //    $.ajax(
+        //        {
+        //            url: '/Home/GetSubSubCategoryBySubCategory?SubCategoryId=' + $("#SubCategory").val(),
+        //            type: 'GET',
+        //            data: "",
+        //            contentType: 'application/json; charset=utf-8',
+        //            success: function (data) {
+        //                var subcat = $.parseJSON(data);
+        //                $("#SubSubCategory").html("");
+        //                for (var i = 0; i < subcat.length; i++) {
+        //                    $("#SubSubCategory").append("<option value='" + subcat[i].SubSubCategoryId + "'>" + subcat[i].SubSubCategoryName + "</option>");
+        //                }
+        //            },
+        //            error: function () {
+        //                alert("error");
+        //            }
+        //        });
+        //}
+
+
+    });
+</script>
+
+

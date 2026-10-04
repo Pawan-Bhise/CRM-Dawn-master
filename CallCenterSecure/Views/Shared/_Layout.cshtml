@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Page-Exit" content="Alpha(opacity=100)" />
+    <title>DAWN MF</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top bgcolor">
+        <img align="middle" src="~/Images/Dawn_colour.png" width="auto" height="50px" style="float: left;padding-top: 3px;margin-right: 15px;margin-left: 100px;background-color: #fff;height: 50px !important;" />
+        <div class="container">
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">OutBound<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("OutBound", "TicketList", "Home")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">InBound<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("InBound", "SRList", "Home")</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">KnowledgeCenter<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Knowledge Center", "KnowledgeList", "KnowledgeCenter")</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                @* <li>@Html.ActionLink("Category", "CategoryMaster", "Admin")</li>
+                                <li>@Html.ActionLink("Sub Category", "SubCategoryMaster", "Admin")</li>
+                                <li>@Html.ActionLink("Sub Sub Category", "SubSubCategoryMaster", "Admin")</li>
+                                <li>@Html.ActionLink("Registration", "Registration", "Admin")</li>*@
+                                <li>@Html.ActionLink("User Management", "UserList", "Admin")</li>
+                            }
+                            <li>@Html.ActionLink("Reset Password", "ResetPassword", "Home")</li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="logout">
+                    @Html.ActionLink("Logout", "LogOut", "Home")
+                </div>
+                <div class="loggedinuser">
+                    Logged In :  @User.Identity.Name
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+    </div>
+    <footer>
+        <img align="middle" src="~/Images/MIBS.png" width="130px" height="auto" style="float: left;padding-top: 3px;margin-right: 15px;margin-left: 30px;" />
+        <p>&copy; @DateTime.Now.Year - License</p>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

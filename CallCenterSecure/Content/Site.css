@@ -1,0 +1,167 @@
+﻿@import url('Site.css');
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+.btn {
+    padding: 10px 35px;
+}
+.form-control:focus {
+    box-shadow:none;
+}
+
+input[type="radio"], input[type="checkbox"], input[type="radio"]:focus, input[type="checkbox"]:focus {
+    outline: none;
+    outline-offset: 0px;
+}
+
+    .maxWidth280px {
+    max-width: 280px;
+}
+footer {
+    position: fixed;
+    height: 50px;
+    bottom: 0;
+    width: 100%;
+    background-color: #333d47;
+    
+}
+    footer p {
+        color: #fff;
+        padding-right:20px;
+        text-align:right;
+    }
+.bgcolor {
+    background-color: #fe6500 !important;
+    border-color: #fe6500 !important;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color:#fff;
+    font-weight:bold;
+}
+.navbar-inverse .navbar-brand {
+    color:#fff;
+}
+.logout a {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 3.428571;
+    color: #fff;
+    background-color: transparent;
+    font-weight: bold;
+    float: right;
+    text-decoration: none;
+}
+.btn-primary {
+    background-color: #fe6500;
+    border-color: #fe6500;
+}
+.btn-primary:hover {
+    color: #fff;
+    background-color: #fe6500;
+    border-color: #fe6500;
+}
+.btn-primary:active, .btn-primary:focus, .btn-primary.focus, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+    background-color: #fe6500;
+    border-color: #fe6500;
+}
+
+.btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+    color: #fff;
+    background-color: #fe6500;
+    border-color: #fe6500;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: #fe6500;
+}
+.errorMsgPadding {
+    padding-left: 0;
+    padding-top: 5px;
+}
+.paddingBottom10px {
+    padding-bottom:10px;
+}
+.paddingtop30px{
+    padding-top: 30px;
+}
+.savecancelbutton {
+    float: right;
+    margin-top: 30px;
+}
+.marginright100px {
+    margin-right:100px;
+}
+.redioButton {
+    width: 50px;
+    float: left;
+    height: 25px;
+}
+.redioButtonText {
+    float: left;
+    width: 0px;
+    line-height: 29px;
+}
+.loggedinuser {
+    float: right;
+    width: 264px;
+    line-height: 49px;
+    color: #fff;
+    font-weight: bold;
+    padding-right: 20px;
+    text-align: right;
+}
+.addbutton {
+    float: right;
+    padding-bottom:25px;
+
+}
+.addbutton a {
+    color: #fe6500;
+}
+.accessdeniedmsg {
+    margin-top: 50px;
+    border: 1px solid;
+    padding: 10px;
+}
+.padingtop-bottom20px {
+    padding-top:20px;
+    padding-bottom:20px;
+}
+.float-left {
+    float:left;
+}
+.margin-bottom-40 {
+    margin-bottom: 40px;
+}
+
+.float-right {
+    float:right !important;
+}
+.margin-top-35 {
+    margin-top:35px;
+}
+.search-frame {
+    border: 1px solid #000;
+    padding: 10px 0 15px 0;
+}

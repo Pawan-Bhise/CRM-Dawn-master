@@ -1,0 +1,427 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/c3.min.css" rel="stylesheet" />
+
+<div class="row">
+
+    <table class="table">
+        <tr>
+            <td>
+                <button type="button" class="btn btn-primary" value="Today" id="btnTodaySR"> Today </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" value="Yesterday" id="btnYesterdaySR">Yesterday</button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" value="Last Month" id="btnLastMonthSR">Last Month</button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" value="All" id="btnAllSR">All</button>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                @Html.DisplayName("Total InBound Call")
+            </th>
+            <th>
+                @Html.DisplayName("Complaint")
+            </th>
+            <th>
+                @Html.DisplayName("Inquire")
+            </th>
+            @*<th>
+                @Html.DisplayName("Closed SR")
+            </th>*@
+        </tr>
+        <tr>
+            <td class="align-center" colspan="2">
+                <span id="totalSR"></span>
+            </td>
+           <td class="align-center">
+                <span id="openSR"></span>
+            </td>
+            <td class="align-center">
+                <span id="inprogressSR"></span>
+            </td>
+            @* <td class="align-center">
+                <span id="closedSR"></span>
+            </td>*@
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div id="pieChart"></div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="table">
+        <tr>
+            <td>
+                <button type="button" class="btn btn-primary" value="Today" id="btnTodayTicket"> Today </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" value="Yesterday" id="btnYesterdayTicket">Yesterday</button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" value="Last Month" id="btnLastMonthTicket">Last Month</button>
+            </td>
+            <td colspan="2">
+                <button type="button" class="btn btn-primary" value="All" id="btnAllTicket">All</button>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayName("Total OutBound Call")
+            </th>
+            <th>
+                @Html.DisplayName("GL Clients") @*Open Ticket*@
+            </th>
+            <th>
+                @Html.DisplayName("All IL Clients") @*InProgress Ticket*@
+            </th>
+            <th>
+                @Html.DisplayName("IL Clients") @*Closed Ticket*@
+            </th>
+            <th>
+                @Html.DisplayName("VSA Clients")
+            </th>
+        </tr>
+        <tr>
+            <td class="align-center">
+                <span id="totalTicket"></span>
+            </td>
+            <td class="align-center">
+                <span id="openTicket"></span>
+            </td>
+            <td class="align-center">
+                <span id="inprogressTicket"></span>
+            </td>
+            <td class="align-center">
+                <span id="closedTicket"></span>
+            </td>
+            <td class="align-center">
+                <span id="vsaclients"></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <div id="pieChartTicket"></div>
+            </td>
+        </tr>
+    </table>
+
+    @*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Top 3 Ticket Categories")
+            </th>
+            <th>
+                @Html.DisplayName("Top 3 SR Categories")
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <span id="top1ticketcategory"></span>
+            </td>
+            <td>
+                <span id="top1srcategory"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span id="top2ticketcategory"></span>
+            </td>
+            <td>
+                <span id="top2srcategory"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span id="top3ticketcategory"></span>
+            </td>
+            <td>
+                <span id="top3srcategory"></span>
+            </td>
+        </tr>
+    </table>*@
+</div>
+<style>
+    .table {
+        width: 49% !important;
+        border: 1px solid #ddd;
+        margin-top: 20px;
+        float: left;
+        margin-left: 5px;
+    }
+
+    td {
+        border: 1px solid #ddd;
+        font-weight: bold;
+    }
+
+    th {
+        border: 1px solid #ddd;
+        text-align: center;
+        background: #fe6500 ;
+        color: #fff;
+    }
+
+    .align-center {
+        text-align: center;
+    }
+
+    .btn-primary {
+        background-color: #fff;
+        border-color: #fe6500 ;
+        color: #fe6500 ;
+    }
+
+    .btn-selected {
+        color: #fff;
+        background-color: #fe6500 ;
+        border-color: #fe6500 ;
+    }
+</style>
+@section Scripts {
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/c3.min.js"></script>
+    <script src="~/Scripts/d3.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $.ajax({
+                type: "GET",
+                url: "/Home/PieChart",
+                data: { "filter": "all" },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    PieChartBuildSR(response);
+                    PieChartBuildTicket(response);
+                    $("#btnAllSR").addClass("btn-selected");
+                    $("#btnAllTicket").addClass("btn-selected");
+                    let top3sr = response.Top3SR.split('|');
+                    if (top3sr.length > 1)
+                        $("#top1srcategory").text(top3sr[0]);
+                    if (top3sr.length > 2)
+                        $("#top2srcategory").text(top3sr[1]);
+                    if (top3sr.length > 3)
+                        $("#top3srcategory").text(top3sr[2]);
+
+                    //let top3ticket = response.Top3Ticket.split('|');
+                    //if (top3ticket.length > 1)
+                    //    $("#top1ticketcategory").text(top3ticket[0]);
+                    //if (top3ticket.length > 2)
+                    //    $("#top2ticketcategory").text(top3ticket[1]);
+                    //if (top3ticket.length > 3)
+                    //    $("#top3ticketcategory").text(top3ticket[2]);
+                },
+            });
+
+
+            $("#btnTodaySR").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "today" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildSR(response);
+                        $("#btnAllSR").removeClass("btn-selected");
+                        $("#btnTodaySR").addClass("btn-selected");
+                        $("#btnYesterdaySR").removeClass("btn-selected");
+                        $("#btnLastMonthSR").removeClass("btn-selected");
+                    },
+                });
+
+            });
+            $("#btnYesterdaySR").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "yesterday" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildSR(response);
+                        $("#btnAllSR").removeClass("btn-selected");
+                        $("#btnTodaySR").removeClass("btn-selected");
+                        $("#btnYesterdaySR").addClass("btn-selected");
+                        $("#btnLastMonthSR").removeClass("btn-selected");
+                    },
+                });
+
+            });
+            $("#btnLastMonthSR").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "lastmonth" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildSR(response);
+                         $("#btnAllSR").removeClass("btn-selected");
+                        $("#btnTodaySR").removeClass("btn-selected");
+                        $("#btnYesterdaySR").removeClass("btn-selected");
+                        $("#btnLastMonthSR").addClass("btn-selected");
+                    },
+                });
+
+            });
+            $("#btnAllSR").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "all" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildSR(response);
+                         $("#btnAllSR").addClass("btn-selected");
+                        $("#btnTodaySR").removeClass("btn-selected");
+                        $("#btnYesterdaySR").removeClass("btn-selected");
+                        $("#btnLastMonthSR").removeClass("btn-selected");
+                    },
+                });
+
+            });
+
+             $("#btnTodayTicket").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "today" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildTicket(response);
+                        $("#btnAllTicket").removeClass("btn-selected");
+                        $("#btnTodayTicket").addClass("btn-selected");
+                        $("#btnYesterdayTicket").removeClass("btn-selected");
+                        $("#btnLastMonthTicket").removeClass("btn-selected");
+                    },
+                });
+
+            });
+            $("#btnYesterdayTicket").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "yesterday" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildTicket(response);
+                        $("#btnAllTicket").removeClass("btn-selected");
+                        $("#btnTodayTicket").removeClass("btn-selected");
+                        $("#btnYesterdayTicket").addClass("btn-selected");
+                        $("#btnLastMonthTicket").removeClass("btn-selected");
+                    },
+                });
+
+            });
+            $("#btnLastMonthTicket").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "lastmonth" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildTicket(response);
+                        $("#btnAllTicket").removeClass("btn-selected");
+                        $("#btnTodayTicket").removeClass("btn-selected");
+                        $("#btnYesterdayTicket").removeClass("btn-selected");
+                        $("#btnLastMonthTicket").addClass("btn-selected");
+                    },
+                });
+
+            });
+            $("#btnAllTicket").click(function () {
+                $.ajax({
+                    type: "GET",
+                    url: "/Home/PieChart",
+                    data: { "filter": "all" },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        PieChartBuildTicket(response);
+                         $("#btnAllTicket").addClass("btn-selected");
+                        $("#btnTodayTicket").removeClass("btn-selected");
+                        $("#btnYesterdayTicket").removeClass("btn-selected");
+                        $("#btnLastMonthTicket").removeClass("btn-selected");
+                    },
+                });
+
+            });
+
+            function PieChartBuildSR(jsondata) {
+                $("#totalSR").text(jsondata.TotalSR);
+                $("#openSR").text(jsondata.OpenSR);
+                $("#inprogressSR").text(jsondata.InProgressSR);
+                //$("#closedSR").text(jsondata.CloseSR);
+
+                var data = {};
+                //var categoryName = ["Open", "Inprogress", "Closed"];
+                var categoryName = ["Complaint", "Inquire"];
+
+                data["Complaint"] = jsondata.OpenSR;
+                data["Inquire"] = jsondata.InProgressSR;
+
+                var chart = c3.generate({
+                    bindto: '#pieChart',
+                    data: {
+                        json: [data],
+                        keys: {
+                            value: categoryName,
+                        },
+                        type: 'pie'
+                    },
+                    color: {
+                        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+                    },
+                });
+
+
+            }
+            function PieChartBuildTicket(jsondata) {
+                $("#totalTicket").text(jsondata.TotalTicket);
+                $("#openTicket").text(jsondata.OpenTicket);
+                $("#inprogressTicket").text(jsondata.InProgressTicket);
+                $("#closedTicket").text(jsondata.CloseTicket);
+                 $("#vsaclients").text(jsondata.VASClient);
+                
+
+                var dataTicket = {};
+                var categoryName = ["GLClients", "AllILClients", "ILClients","VSAClients"];
+                dataTicket["GLClients"] = jsondata.OpenTicket;
+                dataTicket["AllILClients"] = jsondata.InProgressTicket;
+                dataTicket["ILClients"] = jsondata.CloseTicket;
+                dataTicket["VSAClients"] = jsondata.VASClient;
+
+                var chartTicket = c3.generate({
+                    bindto: '#pieChartTicket',
+                    data: {
+                        json: [dataTicket],
+                        keys: {
+                            value: categoryName,
+                        },
+                        type: 'pie'
+                    },
+                    color: {
+                        pattern: ['#ffbb78', '#2ca02c', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+                    },
+                });
+
+
+            }
+        });
+
+
+    </script>
+}

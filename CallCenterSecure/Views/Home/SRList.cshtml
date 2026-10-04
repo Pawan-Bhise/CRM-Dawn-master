@@ -1,0 +1,272 @@
+﻿@model CallCenter.Models.SRManagementModel
+
+@{
+    ViewBag.Title = "Inbound";
+}
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<h2>InBound Management</h2>
+
+
+@using (Html.BeginForm())
+{
+    <div class="row padingtop-bottom20px">
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.TicketOpenDate, new { htmlAttributes = new { @class = "form-control", placeholder = "From date" } })
+            @Html.ValidationMessageFor(model => model.TicketOpenDate, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.TicketCloseDate, new { htmlAttributes = new { @class = "form-control", placeholder = "To date" } })
+            @Html.ValidationMessageFor(model => model.TicketCloseDate, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter phone number" } })
+        </div>
+        <div class="col-md-2">
+            @Html.DropDownListFor(model => model.Status, new SelectList(new[] {new SelectListItem { Text = "Select Status", Value = "Select Status" },
+                                                                                new SelectListItem { Text = "Open", Value = "Open" },
+                                                                                 new SelectListItem { Text = "InProgress", Value = "InProgress" },
+                                                                                 new SelectListItem { Text = "Closed", Value = "Closed" }
+                                                                            }, "Text", "Value"), new { @class = "form-control" })
+        </div>
+        <div class="col-md-4">
+            <input type="submit" value="Apply" class="btn btn-primary" />
+            <input type="button" id="btnDownladExcel" class="btn btn-primary" value="Download Excel" style="float:right" />
+            <input type="button" name="btnCreateTicket" class="btn btn-primary" value="New Call" style="float:right" onclick="window.location= '@Url.Action("SRManagement", "Home")'" />
+        </div>
+    </div>
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Customer Name")
+        </th>
+        <th>
+            @Html.DisplayName("Phone No")
+        </th>
+        <th>
+            @Html.DisplayName("Type Of Call")
+        </th>
+        <th>
+            @Html.DisplayName("Type Of Caller")
+        </th>
+        <th>
+            @Html.DisplayName("Segment")
+        </th>
+        <th>
+            @Html.DisplayName("Nature Of Complaints")
+        </th>
+        <th>
+            @Html.DisplayName("Address")
+        </th>
+        <th>
+            @Html.DisplayName("Region Complaint")
+        </th>
+        <th>
+            @Html.DisplayName("Branch Name")
+        </th>
+        <th>
+            @Html.DisplayName("Branch Other")
+        </th>
+        <th>
+            @Html.DisplayName("Type Of Caller Other")
+        </th>
+        <th>
+            @Html.DisplayName("Type Of Product")
+        </th>
+        <th>
+            @Html.DisplayName("Type Of Product Other")
+        </th>
+        <th>
+            @Html.DisplayName("Region Product")
+        </th>
+        <td>
+            @Html.DisplayName("Town")
+        </td>
+        <th>
+            @Html.DisplayName("Type Of Business")
+        </th>
+        <th>
+            @Html.DisplayName("Type Of Business Other")
+        </th>
+        <th>
+            @Html.DisplayName("Gender")
+        </th>
+        <th>
+            @Html.DisplayName("Request For Resoluction")
+        </th>
+
+        @*<th>
+            @Html.DisplayName("Status")
+        </th>*@
+        <th>
+            @Html.DisplayName("InBound Call Date")
+        </th>
+        @*<th>
+            @Html.DisplayName("SR Close Date")
+        </th>
+        <th>
+            @Html.DisplayName("SR Open AgentS")
+        </th>
+        <th>
+            @Html.DisplayName("Action by")
+        </th>
+
+        <th>
+            @Html.DisplayName("SLA Bridge")
+        </th>*@
+    </tr>
+
+    @foreach (var item in Model.SRList.OrderByDescending(d => d.TicketOpenDate))
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.CustomerName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.PhoneNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeOfCall)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeOfCaller)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CustomerSegment)
+    </td>
+
+
+    <td>
+        @Html.DisplayFor(modelItem => item.NatureofComplaints)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Address)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RegionComplaint)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BranchName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.BranchOther)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeOfCallerOther)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeOfProduct)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeOfProductOther)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RegionProduct)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Town)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeOfBusiness)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TypeOfBusinessOther)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Gender)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.RequestForResoluction)
+    </td>
+
+
+    @*<td>
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>*@
+    <td>
+        @if (item.TicketOpenDate != null)
+        {
+            @Html.DisplayFor(modelItem => item.TicketOpenDate)
+        }
+    </td>
+    @*<td>
+            @if (item.TicketCloseDate != null)
+            {
+                @Html.DisplayFor(modelItem => item.TicketCloseDate)
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketOpenAgentName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketCloseAgentName)
+        </td>
+
+        <td>
+            @if (item.SlaBridge != null && item.SlaBridge == "YES")
+            {
+                <span style="color:red">@item.SlaBridge</span>
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.SlaBridge)
+            }
+
+        </td>
+        <td>
+            @if ((item.Status == null) || (item.Status.ToLower() != "closed"))
+            {
+                @Html.ActionLink("Edit", "SRManagementEdit", new { Id = item.SRId })
+            }
+        </td>*@
+</tr>
+    }
+
+</table>
+
+<style>
+    .btn {
+        padding: 5px 8px;
+    }
+</style>
+@section Scripts {
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('input[type=datetime]').datepicker({
+                dateFormat: '@ViewBag.DateFormat',
+                setDate: new Date(),
+                changeMonth: true,
+                changeYear: true
+            });
+
+
+            $("#btnDownladExcel").click(function () {
+                $.ajax(
+                    {
+                        url: '/Home/SRDownloadExcel?opendate=' + $("#TicketOpenDate").val() + '&closedate=' + $("#TicketCloseDate").val() + '&callingno=' + $("#PhoneNo").val() + '&status=' + $("#Status").val(),
+                        type: 'GET',
+                        data: "",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            var blob = new Blob([data], { type: 'application/ms-excel' });
+                            var downloadUrl = URL.createObjectURL(blob);
+                            var a = document.createElement("a");
+                            a.href = downloadUrl;
+                            a.download = "InBoundExcel.xls";
+                            document.body.appendChild(a);
+                            a.click();
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+
+            });
+
+        });
+    </script>
+}

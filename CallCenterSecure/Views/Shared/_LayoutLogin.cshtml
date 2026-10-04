@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAWN MF</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    
+    @*<div class="navbar navbar-inverse navbar-fixed-top bgcolor">
+            <div class="container">
+
+            </div>
+        </div>*@
+    <div align="middle" class="container body-content">
+        <p>
+            <img align="middle" src="~/Images/Dawn_colour.png" width="100px" />
+        </p>
+        @RenderBody()
+        <hr />
+
+    </div>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - License</p>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    <p style="text-align:center;">
+        <img align="middle" src="~/Images/MIBS-logo.png" />
+        </p>
+</body>
+
+</html>
