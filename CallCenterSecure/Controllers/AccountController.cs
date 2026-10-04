@@ -19,6 +19,10 @@ namespace CallCenter.Controllers
     [AllowAnonymous]
     public class AccountController : Controller
     {
+        /// <summary>
+        /// Test commnet
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
